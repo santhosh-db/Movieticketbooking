@@ -4,6 +4,7 @@ const User = require('../models/User');
 const { Op } = require("sequelize");
 const { statusCodes, messages } = require("../config");
 const {bcrypt} = require("../utils");
+const {errorObjGeneator}=require("../middleware/response");
 class superAdminService { }
 
 superAdminService.createTheatre = async(payLoad,id)=>{
@@ -18,14 +19,27 @@ superAdminService.createTheatre = async(payLoad,id)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        return errorObjGeneator(err);
     }
 }
 
 superAdminService.createScreen = async(payLoad,id)=>{
     try
     {
+        let findScreen = await  Theatre.findByPk(payLoad.theatre_id);
+        if(!findScreen){
+            return {
+                code: statusCodes.HTTP_BAD_REQUEST,
+                message: messages.noTheatre
+            };
+        }
         //create screen
+        if(!(payLoad.rows>0 && payLoad.columns>0)){
+            return {
+                code: statusCodes.HTTP_BAD_REQUEST,
+                message: messages.rowCol
+            };
+        }
         const data = await  Screen.create({...payLoad,capacity:(payLoad.rows*payLoad.columns),created_by:id})
         return {
             code: statusCodes.HTTP_OK,
@@ -34,7 +48,7 @@ superAdminService.createScreen = async(payLoad,id)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        return errorObjGeneator(err);
     }
 }
 
@@ -64,7 +78,7 @@ superAdminService.createAdmin = async(payLoad)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        return errorObjGeneator(err);
     }
 }
 

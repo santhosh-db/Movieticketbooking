@@ -57,6 +57,40 @@ UserController.ticketCancel = async(req,res)=>{
     }
 }
 
+UserController.seatAvailabilityList=async(req,res)=>{
+    try
+    {
+        const result = await  userService.seatAvailabilityList(req.query);
+        return response.success(
+            req,
+            res,
+            result?.code || statusCodes.HTTP_OK,
+            result?.data,
+            result?.message
+          );
+    }catch(error){
+        console.log("err", error);
+        next(error);
+    }
+}
+
+UserController.bookingHistory=async(req,res)=>{
+    try
+    {
+        const result = await  userService.bookingHistory(req.user.id,req.query);
+        return response.success(
+            req,
+            res,
+            result?.code || statusCodes.HTTP_OK,
+            result?.data,
+            result?.message
+          );
+    }catch(error){
+        console.log("err", error);
+        next(error);
+    }
+}
+
 UserController.findbyId= async(req,res)=>{
     try
     {

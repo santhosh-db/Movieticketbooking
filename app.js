@@ -4,6 +4,7 @@ const routers= require('./src/routes');
 const db = require('./src/config/dbConnection');
 const morgan=require('morgan')
 require ('dotenv').config();
+const {sequelize}=require("./src/models")
 
 const app=express();
 app.use(cors());
@@ -48,8 +49,17 @@ db.authenticate()
     console.error('Unable to connect to the database:', err);
 });
 
+//db sync
+sequelize.sync({alter:true})
+.then(() => {
+    console.log("Table updations done");
+}).catch(err=>{
+    console.log("DB Sync Error",err);
+})
+
 //NODE_ENV
 console.log(`Node env is ${process.env.NODE_ENV}`);
+
 
 //PORT
 const PORT=process.env.APP_PORT || 5000;

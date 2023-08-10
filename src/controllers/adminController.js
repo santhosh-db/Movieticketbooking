@@ -1,10 +1,8 @@
 
 const {adminService}=require('../services');
 const { response } = require("../middleware");
-const { adminController } = require('.');
 
 class AdminController { }
-
 AdminController.createMovie = async(req,res,next)=>{
     try
     {

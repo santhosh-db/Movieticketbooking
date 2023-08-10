@@ -6,6 +6,7 @@ const { statusCodes, messages } = require("../config");
 const moment=require('moment');
 const Ticket = require("../models/Ticket");
 const { STATUS } = require("../constants");
+const {errorObjGeneator}=require("../middleware/response");
 
 class AdminService {}
 
@@ -21,7 +22,7 @@ AdminService.createMovie = async(payLoad)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        return errorObjGeneator(err);
     }
 }
 AdminService.scheduleMovie = async(payLoad,id)=>{
@@ -31,7 +32,7 @@ AdminService.scheduleMovie = async(payLoad,id)=>{
         let findMovie = await  Movie.findByPk(payLoad.movie_id);
         let showDate=moment(payLoad.show_date).format("YYYY-MM-DD");
         let releaseDate =moment(findMovie.releaseDate).format("YYYY-MM-DD");
-        if(showDate< releaseDate){
+        if(showDate<releaseDate){
             return {
                 code: statusCodes.HTTP_BAD_REQUEST,
                 message: messages.movieNotReleased
@@ -77,7 +78,7 @@ AdminService.scheduleMovie = async(payLoad,id)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        return errorObjGeneator(err);
     }
 }
 
@@ -111,7 +112,7 @@ AdminService.changeScreen= async(payLoad)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        return errorObjGeneator(err);
     }
 }
 module.exports=AdminService;

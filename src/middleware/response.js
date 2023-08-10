@@ -39,6 +39,25 @@ class Response {
       error
     });
   }
+  errorObjGeneator = (error) => {
+  
+    let err = new Error();
+    err.code = (error.code) ? error.code : statusCodes.HTTP_INTERNAL_SERVER_ERROR;
+    err.message = (error.message) ? error.message : messages.technicalErr;
+    err.status = (error.status) ? error.status : 'Error'
+  
+    if (error.original) {
+      switch (error.original.code) {
+        case 'ER_DUP_ENTRY': err.code = error.original.code;
+          err.message = error.original.sqlMessage;
+          break;
+      }
+  
+    }
+  
+    err.originalErr = error;
+    return err;
+  }
 }
 
 // exporting the module

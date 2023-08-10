@@ -14,16 +14,17 @@ const Ticket = sequelize.define('tickets',
             },
         schedule_id:{
             type:DataTypes.INTEGER,
-            allowNull:false
+            allowNull:false,
+            foreignKey:true
         },
         user_id:{
             type:DataTypes.INTEGER,
             allowNull:false
         },
-        bookingOn: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
+        // bookingOn: {
+        //     type: DataTypes.DATE,
+        //     allowNull: false,
+        // },
         totalSeats: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -49,6 +50,7 @@ const Ticket = sequelize.define('tickets',
 );
 
 // Define the association
+Schedule.hasMany(Ticket, { foreignKey: 'schedule_id', allowNull: false });
 Ticket.belongsTo(Schedule, { foreignKey: 'schedule_id', allowNull: false });
 Ticket.belongsTo(User, { foreignKey: 'user_id', allowNull: false });
 

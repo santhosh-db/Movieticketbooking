@@ -1,13 +1,18 @@
 const { Router } = require("express");
 const { authController } = require("../controllers");
-
-const {signUp,signIn } = require("../validators/auth.validator");
+const {signUp,signIn,superAdminRegister} = require("../validators/auth.validator");
 const authRoutes = Router();
 
 //signUp
 authRoutes.post(
   "/createUser",
   signUp,
+  authController.register
+);
+
+authRoutes.post(
+  "/createSuperAdmin",
+  superAdminRegister,
   authController.register
 );
 

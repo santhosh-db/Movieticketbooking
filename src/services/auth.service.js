@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const { generateToken } = require('../middleware/generateToken');
+const response=require("../middleware/response");
 const {bcrypt} = require("../utils");
 const { Op } = require("sequelize");
 const { statusCodes, messages } = require("../config");
@@ -31,7 +32,7 @@ AuthService.createUser = async(payLoad)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        return errorObjGeneator(err);
     }
 }
 AuthService.signInUser = async(data)=>{
@@ -68,7 +69,7 @@ AuthService.signInUser = async(data)=>{
         };
     }
     catch(err){
-        throw new Error(err)
+        throw response.errorObjGeneator(err);
     }
 }
 

@@ -11,7 +11,9 @@ const schemas = {
     totalSeats: Joi.number().required(),
     seats: Joi.array().required(),
   }),
-  
+  ticketAvailable:Joi.object({
+    scheduleId: Joi.number().required()
+  }),
 }
 
 const validate = async(schema, option, req, data, res, next) => {
@@ -25,6 +27,9 @@ const validate = async(schema, option, req, data, res, next) => {
 module.exports = {
   movieValid: (req, res, next) => {
     validate(schemas.movieValid, OPTIONS.basic, req, req.params, res, next);
+  },
+  ticketAvailable: (req, res, next) => {
+    validate(schemas.ticketAvailable, OPTIONS.basic, req, req.query, res, next);
   },
   ticketBook: (req, res, next) => {
     validate(schemas.ticketBook, OPTIONS.basic, req, req.body, res, next);
