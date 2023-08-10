@@ -68,20 +68,35 @@ UserService.ticketBook = async(payLoad,id)=>{
             };
         }
         //check seats mismatch
-        for (let index = 0; index < payLoad.seats.length; index++) {
-            const element = payLoad.seats[index].toString();
-            let checkSeats = await Ticket.findOne({
+        // for (let index = 0; index < payLoad.seats.length; index++) {
+        //     const element = payLoad.seats[index].toString();
+        //     let checkSeats = await Ticket.findOne({
+        //         where:{
+        //             seats:{[Op.substring]: element}
+        //         }
+        //     });
+        //     if(checkSeats){
+        //         return {
+        //             code: statusCodes.HTTP_BAD_REQUEST,
+        //             message: 'Seat no: '+ element + messages.seatAlreadyBooked
+        //         };
+        //     }
+        // }
+            console.log(payLoad.seats,"gmsfb");
+            let checkSeats = await Ticket.findAll({
                 where:{
-                    seats:{[Op.substring]: element}
+                    seats:{[Op.like]: `%${payLoad.seats}%`},
+                    schedule_id:payLoad.schedule_id
                 }
             });
-            if(checkSeats){
+            if(checkSeats.length>0){
                 return {
                     code: statusCodes.HTTP_BAD_REQUEST,
-                    message: 'Seat no: '+ element + messages.seatAlreadyBooked
+                    message: messages.seatAlreadyBooked
                 };
             }
-        }
+
+
         //book ticket
         let body={
             schedule_id:payLoad.schedule_id,

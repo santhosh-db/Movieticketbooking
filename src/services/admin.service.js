@@ -30,6 +30,12 @@ AdminService.scheduleMovie = async(payLoad,id)=>{
     {
         //check movie is released
         let findMovie = await  Movie.findByPk(payLoad.movie_id);
+        if(!findMovie){
+            return {
+                code: statusCodes.HTTP_BAD_REQUEST,
+                message: messages.noMovie
+            };
+        }
         let showDate=moment(payLoad.show_date).format("YYYY-MM-DD");
         let releaseDate =moment(findMovie.releaseDate).format("YYYY-MM-DD");
         if(showDate<releaseDate){

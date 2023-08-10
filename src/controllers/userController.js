@@ -24,7 +24,7 @@ UserController.movieList = async(req,res,next)=>{
 UserController.ticketBook = async(req,res,next)=>{
     try
     {
-        const result = await  userService.ticketBook(req.body,req.user.id);
+        const result = await userService.ticketBook(req.body, req.user.id);
         return response.success(
             req,
             res,
